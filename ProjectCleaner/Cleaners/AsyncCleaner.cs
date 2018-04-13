@@ -16,22 +16,18 @@ namespace ProjectCleaner.Cleaners
 
         public AsyncCleaner(RecycleOption recycleOption, IStatusTracker statusTracker)
         {
-            if (statusTracker == null)
-                throw new ArgumentNullException(nameof(statusTracker));
-
+            _statusTracker = statusTracker ?? throw new ArgumentNullException(nameof(statusTracker));
             RecycleOption = recycleOption;
-            _statusTracker = statusTracker;
         }
 
         public RecycleOption RecycleOption { get; set; }
 
         public async Task CleanAsync(string filePath, CleanerOptions options = CleanerOptions.None)
         {
-            var tasks = new List<Task>();
-
-            //if ((options & CleanerOptions.ClearNugetPackages != CleanerOptions.None) 
-
-            tasks.Add(CleanRecursiveAsync(filePath));
+            var tasks = new List<Task>()
+            {
+                CleanRecursiveAsync(filePath, options)
+            };
 
             if ((options & CleanerOptions.ClearTemporaryFiles) != CleanerOptions.None) tasks.Add(CleanTemporayFilesAsync());
             if ((options & CleanerOptions.ClearAspNetFiles) != CleanerOptions.None) tasks.Add(CleanAspNetFilesAsync());
@@ -94,20 +90,29 @@ namespace ProjectCleaner.Cleaners
             }
         }
 
-        private async Task CleanRecursiveAsync(string filePath)
+        private async Task CleanRecursiveAsync(string filePath, CleanerOptions options)
         {
+            var tasks = new List<Task>();
             var bin = filePath + @"\bin";
             var obj = filePath + @"\obj";
+            var packages = (options & CleanerOptions.ClearNugetPackages) != CleanerOptions.None ? filePath + @"\packages" : string.Empty;
 
-            if (Directory.Exists(bin) || Directory.Exists(obj))
+            if (Directory.Exists(bin))
+                tasks.Add(DeleteDirectoryAsync(bin));
+            if (Directory.Exists(obj))
+                tasks.Add(DeleteDirectoryAsync(obj));
+            if (Directory.Exists(packages))
+                tasks.Add(DeleteDirectoryAsync(packages));
+
+            if (tasks.Any())
             {
-                await Task.WhenAll(DeleteDirectoryAsync(bin), DeleteDirectoryAsync(obj));
+                await Task.WhenAll(tasks);
             }
             else
             {
                 foreach (var folder in Directory.GetDirectories(filePath))
                 {
-                    await CleanRecursiveAsync(folder);
+                    await CleanRecursiveAsync(folder, options);
                 }
             }
         }

@@ -52,6 +52,7 @@ namespace ProjectCleaner
 
                 if (cbTempFiles.Checked) options |= CleanerOptions.ClearTemporaryFiles;
                 if (cbAspFiles.Checked) options |= CleanerOptions.ClearAspNetFiles;
+                if (cbNugetPackages.Checked) options |= CleanerOptions.ClearNugetPackages;
 
                 await cleaner.CleanAsync(filePath, options);
 
@@ -63,9 +64,7 @@ namespace ProjectCleaner
 		{
 			var checkBoxes = groupBox1.Controls.OfType<CheckBox>();
 			foreach (var option in checkBoxes)
-			{
 				option.Checked = selected;
-			}
 		}
 
 		private void SelectFile()
@@ -76,9 +75,7 @@ namespace ProjectCleaner
 			var result = folderBrowser.ShowDialog(this);
 
 			if (!_cancelledStatuses.Contains(result))
-			{
 				txtFolder.Text = folderBrowser.SelectedPath.Trim();
-			}
 		}
 
         private void LockUI()
@@ -89,6 +86,7 @@ namespace ProjectCleaner
             btnClean.Enabled = false;
             cbAspFiles.Enabled = false;
             cbTempFiles.Enabled = false;
+            cbNugetPackages.Enabled = false;
             btnSelectAll.Enabled = false;
             btnSelectNone.Enabled = false;
             rbRecycle.Enabled = false;
@@ -103,6 +101,7 @@ namespace ProjectCleaner
             btnClean.Enabled = true;
             cbAspFiles.Enabled = true;
             cbTempFiles.Enabled = true;
+            cbNugetPackages.Enabled = true;
             btnSelectAll.Enabled = true;
             btnSelectNone.Enabled = true;
             rbRecycle.Enabled = true;
@@ -121,9 +120,7 @@ namespace ProjectCleaner
                 sbSuccess.AppendLine();
 
                 foreach (var path in statusTracker.FailedFiles.Keys)
-                {
                     sbSuccess.AppendLine(path);
-                }
             }
 
             return sbSuccess.ToString();
@@ -145,9 +142,7 @@ namespace ProjectCleaner
 			{
 				var rootFolderResult = MessageBox.Show("WARNING: You have selected a root drive folder. Processing this will remove all bin and obj folders on the entire drive and could cause unexpected results.\r\n\r\nAre you sure you would like to continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
 				if (_cancelledStatuses.Contains(rootFolderResult))
-				{
 					return false;
-				}
 			}
 
 			return true;
@@ -155,25 +150,13 @@ namespace ProjectCleaner
 
 		#region Events
 
-		private void ProjectCleaner_Load(object sender, EventArgs e)
-		{
-			InitUI();
-		}
+		private void ProjectCleaner_Load(object sender, EventArgs e) => InitUI();
 
-		private void btnSelectAll_Click(object sender, EventArgs e)
-		{
-			ToggleOptions(true);
-		}
+		private void btnSelectAll_Click(object sender, EventArgs e) => ToggleOptions(true);
 
-		private void btnSelectNone_Click(object sender, EventArgs e)
-		{
-			ToggleOptions(false);
-		}
+		private void btnSelectNone_Click(object sender, EventArgs e) => ToggleOptions(false);
 
-		private void btnCancel_Click(object sender, EventArgs e)
-		{
-			this.Close();
-		}
+		private void btnCancel_Click(object sender, EventArgs e) => Close();
 
 		private async void btnClean_Click(object sender, EventArgs e)
 		{
@@ -196,26 +179,14 @@ namespace ProjectCleaner
 			}
 		}
 
-		private void txtFolder_TextChanged(object sender, EventArgs e)
-		{
-			btnClean.Enabled = !string.IsNullOrEmpty(txtFolder.Text.Trim());
-		}
+		private void txtFolder_TextChanged(object sender, EventArgs e) => btnClean.Enabled = !string.IsNullOrEmpty(txtFolder.Text.Trim());
 
-		private void btnBrowse_Click(object sender, EventArgs e)
-		{
-			SelectFile();
-		}
+		private void btnBrowse_Click(object sender, EventArgs e) => SelectFile();
 
-		private void rbDelete_CheckedChanged(object sender, EventArgs e)
-		{
-			rbRecycle.Checked = !rbDelete.Checked;
-		}
+		private void rbDelete_CheckedChanged(object sender, EventArgs e) => rbRecycle.Checked = !rbDelete.Checked;
 
-		private void rbRecycle_CheckedChanged(object sender, EventArgs e)
-		{
-			rbDelete.Checked = !rbRecycle.Checked;
-		}
+		private void rbRecycle_CheckedChanged(object sender, EventArgs e) => rbDelete.Checked = !rbRecycle.Checked;
 
-		#endregion Events
-	}
+        #endregion Events
+    }
 }

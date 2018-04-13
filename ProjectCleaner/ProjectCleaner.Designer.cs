@@ -43,6 +43,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.processCounterLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.processCounter = new System.Windows.Forms.ToolStripStatusLabel();
+            this.cbNugetPackages = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -50,10 +51,9 @@
             // lblFolder
             // 
             this.lblFolder.AutoSize = true;
-            this.lblFolder.Location = new System.Drawing.Point(16, 23);
-            this.lblFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFolder.Location = new System.Drawing.Point(12, 19);
             this.lblFolder.Name = "lblFolder";
-            this.lblFolder.Size = new System.Drawing.Size(52, 17);
+            this.lblFolder.Size = new System.Drawing.Size(39, 13);
             this.lblFolder.TabIndex = 0;
             this.lblFolder.Text = "Folder:";
             // 
@@ -61,20 +61,18 @@
             // 
             this.txtFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFolder.Location = new System.Drawing.Point(76, 20);
-            this.txtFolder.Margin = new System.Windows.Forms.Padding(4);
+            this.txtFolder.Location = new System.Drawing.Point(57, 16);
             this.txtFolder.Name = "txtFolder";
-            this.txtFolder.Size = new System.Drawing.Size(388, 22);
+            this.txtFolder.Size = new System.Drawing.Size(292, 20);
             this.txtFolder.TabIndex = 1;
             this.txtFolder.TextChanged += new System.EventHandler(this.txtFolder_TextChanged);
             // 
             // btnBrowse
             // 
             this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse.Location = new System.Drawing.Point(473, 17);
-            this.btnBrowse.Margin = new System.Windows.Forms.Padding(4);
+            this.btnBrowse.Location = new System.Drawing.Point(355, 14);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(91, 28);
+            this.btnBrowse.Size = new System.Drawing.Size(68, 23);
             this.btnBrowse.TabIndex = 2;
             this.btnBrowse.Text = "Browse...";
             this.btnBrowse.UseVisualStyleBackColor = true;
@@ -83,10 +81,9 @@
             // cbTempFiles
             // 
             this.cbTempFiles.AutoSize = true;
-            this.cbTempFiles.Location = new System.Drawing.Point(8, 23);
-            this.cbTempFiles.Margin = new System.Windows.Forms.Padding(4);
+            this.cbTempFiles.Location = new System.Drawing.Point(6, 19);
             this.cbTempFiles.Name = "cbTempFiles";
-            this.cbTempFiles.Size = new System.Drawing.Size(169, 21);
+            this.cbTempFiles.Size = new System.Drawing.Size(127, 17);
             this.cbTempFiles.TabIndex = 3;
             this.cbTempFiles.Text = "Clear Temporary Files";
             this.cbTempFiles.UseVisualStyleBackColor = true;
@@ -94,10 +91,9 @@
             // cbAspFiles
             // 
             this.cbAspFiles.AutoSize = true;
-            this.cbAspFiles.Location = new System.Drawing.Point(8, 52);
-            this.cbAspFiles.Margin = new System.Windows.Forms.Padding(4);
+            this.cbAspFiles.Location = new System.Drawing.Point(6, 42);
             this.cbAspFiles.Name = "cbAspFiles";
-            this.cbAspFiles.Size = new System.Drawing.Size(232, 21);
+            this.cbAspFiles.Size = new System.Drawing.Size(176, 17);
             this.cbAspFiles.TabIndex = 4;
             this.cbAspFiles.Text = "Clear Temporary ASP.NET Files";
             this.cbAspFiles.UseVisualStyleBackColor = true;
@@ -107,15 +103,14 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.cbNugetPackages);
             this.groupBox1.Controls.Add(this.rbRecycle);
             this.groupBox1.Controls.Add(this.rbDelete);
             this.groupBox1.Controls.Add(this.cbAspFiles);
             this.groupBox1.Controls.Add(this.cbTempFiles);
-            this.groupBox1.Location = new System.Drawing.Point(20, 55);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Location = new System.Drawing.Point(15, 45);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(544, 130);
+            this.groupBox1.Size = new System.Drawing.Size(408, 112);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cleaner Options";
@@ -124,10 +119,9 @@
             // 
             this.rbRecycle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rbRecycle.AutoSize = true;
-            this.rbRecycle.Location = new System.Drawing.Point(173, 102);
-            this.rbRecycle.Margin = new System.Windows.Forms.Padding(4);
+            this.rbRecycle.Location = new System.Drawing.Point(129, 89);
             this.rbRecycle.Name = "rbRecycle";
-            this.rbRecycle.Size = new System.Drawing.Size(156, 21);
+            this.rbRecycle.Size = new System.Drawing.Size(122, 17);
             this.rbRecycle.TabIndex = 6;
             this.rbRecycle.TabStop = true;
             this.rbRecycle.Text = "Send to Recycle Bin";
@@ -138,10 +132,9 @@
             // 
             this.rbDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rbDelete.AutoSize = true;
-            this.rbDelete.Location = new System.Drawing.Point(9, 102);
-            this.rbDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.rbDelete.Location = new System.Drawing.Point(6, 89);
             this.rbDelete.Name = "rbDelete";
-            this.rbDelete.Size = new System.Drawing.Size(153, 21);
+            this.rbDelete.Size = new System.Drawing.Size(117, 17);
             this.rbDelete.TabIndex = 5;
             this.rbDelete.TabStop = true;
             this.rbDelete.Text = "Delete Permanently";
@@ -151,10 +144,9 @@
             // btnSelectNone
             // 
             this.btnSelectNone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectNone.Location = new System.Drawing.Point(128, 193);
-            this.btnSelectNone.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSelectNone.Location = new System.Drawing.Point(96, 163);
             this.btnSelectNone.Name = "btnSelectNone";
-            this.btnSelectNone.Size = new System.Drawing.Size(100, 28);
+            this.btnSelectNone.Size = new System.Drawing.Size(75, 23);
             this.btnSelectNone.TabIndex = 6;
             this.btnSelectNone.Text = "Select None";
             this.btnSelectNone.UseVisualStyleBackColor = true;
@@ -163,10 +155,9 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAll.Location = new System.Drawing.Point(20, 193);
-            this.btnSelectAll.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSelectAll.Location = new System.Drawing.Point(15, 163);
             this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(100, 28);
+            this.btnSelectAll.Size = new System.Drawing.Size(75, 23);
             this.btnSelectAll.TabIndex = 5;
             this.btnSelectAll.Text = "Select All";
             this.btnSelectAll.UseVisualStyleBackColor = true;
@@ -175,10 +166,9 @@
             // btnClean
             // 
             this.btnClean.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClean.Location = new System.Drawing.Point(356, 193);
-            this.btnClean.Margin = new System.Windows.Forms.Padding(4);
+            this.btnClean.Location = new System.Drawing.Point(267, 163);
             this.btnClean.Name = "btnClean";
-            this.btnClean.Size = new System.Drawing.Size(100, 28);
+            this.btnClean.Size = new System.Drawing.Size(75, 23);
             this.btnClean.TabIndex = 7;
             this.btnClean.Text = "Clean";
             this.btnClean.UseVisualStyleBackColor = true;
@@ -188,10 +178,9 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(464, 193);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCancel.Location = new System.Drawing.Point(348, 163);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(100, 28);
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 8;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -204,9 +193,10 @@
             this.processCounterLabel,
             this.processCounter});
             this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip.Location = new System.Drawing.Point(0, 229);
+            this.statusStrip.Location = new System.Drawing.Point(0, 190);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(580, 25);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
+            this.statusStrip.Size = new System.Drawing.Size(435, 22);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 9;
             this.statusStrip.Text = "statusStrip1";
@@ -214,22 +204,32 @@
             // processCounterLabel
             // 
             this.processCounterLabel.Name = "processCounterLabel";
-            this.processCounterLabel.Size = new System.Drawing.Size(133, 20);
+            this.processCounterLabel.Size = new System.Drawing.Size(106, 17);
             this.processCounterLabel.Text = "Objects processed:";
             // 
             // processCounter
             // 
             this.processCounter.Name = "processCounter";
-            this.processCounter.Size = new System.Drawing.Size(17, 20);
+            this.processCounter.Size = new System.Drawing.Size(13, 17);
             this.processCounter.Text = "0";
+            // 
+            // cbNugetPackages
+            // 
+            this.cbNugetPackages.AutoSize = true;
+            this.cbNugetPackages.Location = new System.Drawing.Point(6, 65);
+            this.cbNugetPackages.Name = "cbNugetPackages";
+            this.cbNugetPackages.Size = new System.Drawing.Size(133, 17);
+            this.cbNugetPackages.TabIndex = 7;
+            this.cbNugetPackages.Text = "Clear Nuget Packages";
+            this.cbNugetPackages.UseVisualStyleBackColor = true;
             // 
             // ProjectCleaner
             // 
             this.AcceptButton = this.btnClean;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(580, 254);
+            this.ClientSize = new System.Drawing.Size(435, 212);
             this.Controls.Add(this.btnSelectNone);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSelectAll);
@@ -240,7 +240,6 @@
             this.Controls.Add(this.lblFolder);
             this.Controls.Add(this.statusStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProjectCleaner";
@@ -275,5 +274,6 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel processCounterLabel;
         private System.Windows.Forms.ToolStripStatusLabel processCounter;
+        private System.Windows.Forms.CheckBox cbNugetPackages;
     }
 }

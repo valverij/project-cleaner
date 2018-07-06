@@ -9,14 +9,8 @@ namespace ProjectCleaner.Cleaners
     public class CleanerStatusTracker : IStatusTracker
     {
         private object _lock = new object();
-        public delegate void IncrementHandler(int currentValue);
 
-        private IncrementHandler _onIncrement;
-
-        public CleanerStatusTracker(IncrementHandler onIncrement)
-        {
-            _onIncrement = onIncrement;
-        }
+        public IncrementHandler OnIncrement { get; set; }
 
         public int Complete { get; set; } = 0;
 
@@ -27,8 +21,7 @@ namespace ProjectCleaner.Cleaners
             lock(_lock)
             {
                 Complete++;
-                if (_onIncrement != null)
-                    _onIncrement(Complete);
+                OnIncrement?.Invoke(Complete);
             }
         }
 

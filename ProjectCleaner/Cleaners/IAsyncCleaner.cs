@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace ProjectCleaner.Cleaners
 {
-    interface IAsyncCleaner
+    public interface IAsyncCleaner
     {
-        RecycleOption RecycleOption { get; set; }
-        Task CleanAsync(string filePath, CleanerOptions options = CleanerOptions.None);
+        Task CleanAsync(string filePath, CleanerOptions options = CleanerOptions.None, RecycleOption recycleOption = RecycleOption.SendToRecycleBin);
     }
 }

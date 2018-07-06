@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjectCleaner.Cleaners
@@ -12,30 +11,25 @@ namespace ProjectCleaner.Cleaners
     {
         private IStatusTracker _statusTracker;
 
-        private readonly List<string> _foldersToRemove = new List<string>() { "bin", "proj" };
-
-        public AsyncCleaner(RecycleOption recycleOption, IStatusTracker statusTracker)
+        public AsyncCleaner(IStatusTracker statusTracker)
         {
             _statusTracker = statusTracker ?? throw new ArgumentNullException(nameof(statusTracker));
-            RecycleOption = recycleOption;
         }
 
-        public RecycleOption RecycleOption { get; set; }
-
-        public async Task CleanAsync(string filePath, CleanerOptions options = CleanerOptions.None)
+        public async Task CleanAsync(string filePath, CleanerOptions options = CleanerOptions.None, RecycleOption recycleOption = RecycleOption.SendToRecycleBin)
         {
             var tasks = new List<Task>()
             {
-                CleanRecursiveAsync(filePath, options)
+                CleanRecursiveAsync(filePath, options, recycleOption)
             };
 
-            if ((options & CleanerOptions.ClearTemporaryFiles) != CleanerOptions.None) tasks.Add(CleanTemporayFilesAsync());
-            if ((options & CleanerOptions.ClearAspNetFiles) != CleanerOptions.None) tasks.Add(CleanAspNetFilesAsync());
+            if ((options & CleanerOptions.ClearTemporaryFiles) != CleanerOptions.None) tasks.Add(CleanTemporayFilesAsync(recycleOption));
+            if ((options & CleanerOptions.ClearAspNetFiles) != CleanerOptions.None) tasks.Add(CleanAspNetFilesAsync(recycleOption));
 
             await Task.WhenAll(tasks);
         }
 
-        private async Task CleanAspNetFilesAsync()
+        private async Task CleanAspNetFilesAsync(RecycleOption recycleOption)
         {
             var windowsFolder = Environment.GetFolderPath(Environment.SpecialFolder.Windows, Environment.SpecialFolderOption.None);
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.None);
@@ -62,8 +56,8 @@ namespace ProjectCleaner.Cleaners
                         var tempPath = childPath + @"\Temporary ASP.NET Files";
                         if (Directory.Exists(tempPath))
                         {
-                            tasks.Add(DeleteAllDirectoriesAsync(tempPath));
-                            tasks.Add(DeleteAllFilesAsync(tempPath));
+                            tasks.Add(DeleteAllDirectoriesAsync(tempPath, recycleOption));
+                            tasks.Add(DeleteAllFilesAsync(tempPath, recycleOption));
                         }
                     }
                 }
@@ -73,24 +67,24 @@ namespace ProjectCleaner.Cleaners
             {
                 if (Directory.Exists(filePath))
                 {
-                    tasks.Add(DeleteAllDirectoriesAsync(filePath));
-                    tasks.Add(DeleteAllFilesAsync(filePath));
+                    tasks.Add(DeleteAllDirectoriesAsync(filePath, recycleOption));
+                    tasks.Add(DeleteAllFilesAsync(filePath, recycleOption));
                 }
             }
 
             await Task.WhenAll(tasks);
         }
 
-        private async Task CleanTemporayFilesAsync()
+        private async Task CleanTemporayFilesAsync(RecycleOption recycleOption)
         {
             var filePath = Path.GetTempPath();
             if (!string.IsNullOrEmpty(filePath))
             {
-                await Task.WhenAll(DeleteAllDirectoriesAsync(filePath), DeleteAllFilesAsync(filePath));
+                await Task.WhenAll(DeleteAllDirectoriesAsync(filePath, recycleOption), DeleteAllFilesAsync(filePath, recycleOption));
             }
         }
 
-        private async Task CleanRecursiveAsync(string filePath, CleanerOptions options)
+        private async Task CleanRecursiveAsync(string filePath, CleanerOptions options, RecycleOption recycleOption)
         {
             var tasks = new List<Task>();
             var bin = filePath + @"\bin";
@@ -98,11 +92,11 @@ namespace ProjectCleaner.Cleaners
             var packages = (options & CleanerOptions.ClearNugetPackages) != CleanerOptions.None ? filePath + @"\packages" : string.Empty;
 
             if (Directory.Exists(bin))
-                tasks.Add(DeleteDirectoryAsync(bin));
+                tasks.Add(DeleteDirectoryAsync(bin, recycleOption));
             if (Directory.Exists(obj))
-                tasks.Add(DeleteDirectoryAsync(obj));
+                tasks.Add(DeleteDirectoryAsync(obj, recycleOption));
             if (Directory.Exists(packages))
-                tasks.Add(DeleteDirectoryAsync(packages));
+                tasks.Add(DeleteDirectoryAsync(packages, recycleOption));
 
             if (tasks.Any())
             {
@@ -112,34 +106,34 @@ namespace ProjectCleaner.Cleaners
             {
                 foreach (var folder in Directory.GetDirectories(filePath))
                 {
-                    await CleanRecursiveAsync(folder, options);
+                    await CleanRecursiveAsync(folder, options, recycleOption);
                 }
             }
         }
 
-        private async Task DeleteAllFilesAsync(string filePath)
+        private async Task DeleteAllFilesAsync(string filePath, RecycleOption recycleOption)
         {
             foreach (var fileName in Directory.GetFiles(filePath))
             {
                 var fullPath = Path.Combine(filePath, fileName);
-                await DeleteFileAsync(fullPath);
+                await DeleteFileAsync(fullPath, recycleOption);
             }
         }
 
-        private async Task DeleteAllDirectoriesAsync(string filePath)
+        private async Task DeleteAllDirectoriesAsync(string filePath, RecycleOption recycleOption)
         {
-            foreach (var childPath in System.IO.Directory.GetDirectories(filePath))
+            foreach (var childPath in Directory.GetDirectories(filePath))
             {
-                await DeleteDirectoryAsync(childPath);
+                await DeleteDirectoryAsync(childPath, recycleOption);
             }
         }
 
-        private async Task DeleteFileAsync(string filePath)
+        private async Task DeleteFileAsync(string filePath, RecycleOption recycleOption)
         {
             try
             {
                 if (File.Exists(filePath))
-                    await Task.Run(() => FileSystem.DeleteFile(filePath, UIOption.OnlyErrorDialogs, RecycleOption, UICancelOption.DoNothing));
+                    await Task.Run(() => FileSystem.DeleteFile(filePath, UIOption.OnlyErrorDialogs, recycleOption, UICancelOption.DoNothing));
             }
             catch (IOException ex) // thrown when a file is in use
             {
@@ -151,12 +145,12 @@ namespace ProjectCleaner.Cleaners
             }
         }
 
-        private async Task DeleteDirectoryAsync(string filePath)
+        private async Task DeleteDirectoryAsync(string filePath, RecycleOption recycleOption)
         {
             try
             {
                 if (Directory.Exists(filePath))
-                    await Task.Run(() => FileSystem.DeleteDirectory(filePath, UIOption.OnlyErrorDialogs, RecycleOption, UICancelOption.DoNothing));
+                    await Task.Run(() => FileSystem.DeleteDirectory(filePath, UIOption.OnlyErrorDialogs, recycleOption, UICancelOption.DoNothing));
             }
             catch (IOException ex) // thrown when a folder is in use
             {

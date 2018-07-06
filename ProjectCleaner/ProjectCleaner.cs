@@ -12,12 +12,20 @@ namespace ProjectCleaner
 {
 	public partial class ProjectCleaner : Form
 	{
-		private readonly System.Windows.Forms.DialogResult[] _cancelledStatuses = new[] { DialogResult.Abort, DialogResult.Cancel, DialogResult.No, DialogResult.None, DialogResult.Retry };		
+		private readonly DialogResult[] _cancelledStatuses = new[] { DialogResult.Abort, DialogResult.Cancel, DialogResult.No, DialogResult.None, DialogResult.Retry };
 
-		public ProjectCleaner()
+        private readonly IAsyncCleaner _cleaner;
+        private readonly IStatusTracker _statusTracker;
+
+        public ProjectCleaner(IStatusTracker statusTracker, IAsyncCleaner cleaner) 
 		{
 			InitializeComponent();
-		}
+
+            _statusTracker = statusTracker;
+            _cleaner = cleaner;
+
+            statusTracker.OnIncrement = value => processCounter.Text = value.ToString();
+        }
 
 		private RecycleOption RecycleOption
 		{
@@ -46,17 +54,15 @@ namespace ProjectCleaner
             if (ValidateForm(filePath))
             {
                 processCounter.Text = "0";
-                var statusTracker = new CleanerStatusTracker(v => processCounter.Text = v.ToString());
-                var cleaner = new AsyncCleaner(RecycleOption, statusTracker);
                 var options = CleanerOptions.None;
 
                 if (cbTempFiles.Checked) options |= CleanerOptions.ClearTemporaryFiles;
                 if (cbAspFiles.Checked) options |= CleanerOptions.ClearAspNetFiles;
                 if (cbNugetPackages.Checked) options |= CleanerOptions.ClearNugetPackages;
 
-                await cleaner.CleanAsync(filePath, options);
+                await _cleaner.CleanAsync(filePath, options, RecycleOption);
 
-                MessageBox.Show(BuildSuccessMessage(statusTracker), "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                MessageBox.Show(BuildSuccessMessage(_statusTracker), "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
         }
         

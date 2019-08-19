@@ -13,6 +13,6 @@ namespace ProjectCleaner.Cleaners
         ClearTemporaryFiles = 0x01,
         ClearAspNetFiles = 0x02,
         ClearNugetPackages = 0x04,
-        DeleteSolutionUserOptions = 0x08,
+        ClearNodeModules = 0x08,
     }
 }

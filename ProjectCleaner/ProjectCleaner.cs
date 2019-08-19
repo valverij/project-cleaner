@@ -59,6 +59,7 @@ namespace ProjectCleaner
                 if (cbTempFiles.Checked) options |= CleanerOptions.ClearTemporaryFiles;
                 if (cbAspFiles.Checked) options |= CleanerOptions.ClearAspNetFiles;
                 if (cbNugetPackages.Checked) options |= CleanerOptions.ClearNugetPackages;
+                if (cbNodeModules.Checked) options |= CleanerOptions.ClearNodeModules;
 
                 await _cleaner.CleanAsync(filePath, options, RecycleOption);
 
@@ -93,6 +94,7 @@ namespace ProjectCleaner
             cbAspFiles.Enabled = false;
             cbTempFiles.Enabled = false;
             cbNugetPackages.Enabled = false;
+            cbNodeModules.Enabled = false;
             btnSelectAll.Enabled = false;
             btnSelectNone.Enabled = false;
             rbRecycle.Enabled = false;
@@ -108,6 +110,7 @@ namespace ProjectCleaner
             cbAspFiles.Enabled = true;
             cbTempFiles.Enabled = true;
             cbNugetPackages.Enabled = true;
+            cbNodeModules.Enabled = true;
             btnSelectAll.Enabled = true;
             btnSelectNone.Enabled = true;
             rbRecycle.Enabled = true;

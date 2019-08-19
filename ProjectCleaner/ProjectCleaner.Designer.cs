@@ -34,6 +34,7 @@
             this.cbTempFiles = new System.Windows.Forms.CheckBox();
             this.cbAspFiles = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbNugetPackages = new System.Windows.Forms.CheckBox();
             this.rbRecycle = new System.Windows.Forms.RadioButton();
             this.rbDelete = new System.Windows.Forms.RadioButton();
             this.btnSelectNone = new System.Windows.Forms.Button();
@@ -43,7 +44,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.processCounterLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.processCounter = new System.Windows.Forms.ToolStripStatusLabel();
-            this.cbNugetPackages = new System.Windows.Forms.CheckBox();
+            this.cbNodeModules = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -103,6 +104,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.cbNodeModules);
             this.groupBox1.Controls.Add(this.cbNugetPackages);
             this.groupBox1.Controls.Add(this.rbRecycle);
             this.groupBox1.Controls.Add(this.rbDelete);
@@ -114,6 +116,16 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cleaner Options";
+            // 
+            // cbNugetPackages
+            // 
+            this.cbNugetPackages.AutoSize = true;
+            this.cbNugetPackages.Location = new System.Drawing.Point(6, 65);
+            this.cbNugetPackages.Name = "cbNugetPackages";
+            this.cbNugetPackages.Size = new System.Drawing.Size(133, 17);
+            this.cbNugetPackages.TabIndex = 7;
+            this.cbNugetPackages.Text = "Clear Nuget Packages";
+            this.cbNugetPackages.UseVisualStyleBackColor = true;
             // 
             // rbRecycle
             // 
@@ -213,15 +225,15 @@
             this.processCounter.Size = new System.Drawing.Size(13, 17);
             this.processCounter.Text = "0";
             // 
-            // cbNugetPackages
+            // cbNodeModules
             // 
-            this.cbNugetPackages.AutoSize = true;
-            this.cbNugetPackages.Location = new System.Drawing.Point(6, 65);
-            this.cbNugetPackages.Name = "cbNugetPackages";
-            this.cbNugetPackages.Size = new System.Drawing.Size(133, 17);
-            this.cbNugetPackages.TabIndex = 7;
-            this.cbNugetPackages.Text = "Clear Nuget Packages";
-            this.cbNugetPackages.UseVisualStyleBackColor = true;
+            this.cbNodeModules.AutoSize = true;
+            this.cbNodeModules.Location = new System.Drawing.Point(201, 19);
+            this.cbNodeModules.Name = "cbNodeModules";
+            this.cbNodeModules.Size = new System.Drawing.Size(122, 17);
+            this.cbNodeModules.TabIndex = 8;
+            this.cbNodeModules.Text = "Clear Node Modules";
+            this.cbNodeModules.UseVisualStyleBackColor = true;
             // 
             // ProjectCleaner
             // 
@@ -275,5 +287,6 @@
         private System.Windows.Forms.ToolStripStatusLabel processCounterLabel;
         private System.Windows.Forms.ToolStripStatusLabel processCounter;
         private System.Windows.Forms.CheckBox cbNugetPackages;
+        private System.Windows.Forms.CheckBox cbNodeModules;
     }
 }

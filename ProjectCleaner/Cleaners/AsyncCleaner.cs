@@ -86,29 +86,60 @@ namespace ProjectCleaner.Cleaners
 
         private async Task CleanRecursiveAsync(string filePath, CleanerOptions options, RecycleOption recycleOption)
         {
-            var tasks = new List<Task>();
-            var bin = filePath + @"\bin";
-            var obj = filePath + @"\obj";
-            var packages = (options & CleanerOptions.ClearNugetPackages) != CleanerOptions.None ? filePath + @"\packages" : string.Empty;
+            var bin = Path.Combine(filePath, "bin");
+            var obj = Path.Combine(filePath, "obj");
+            var packages = (options & CleanerOptions.ClearNugetPackages) != CleanerOptions.None ? Path.Combine(filePath, "packages") : string.Empty;
+            var nodeModules = (options & CleanerOptions.ClearNodeModules) != CleanerOptions.None ? Path.Combine(filePath, "node_modules") : string.Empty;
 
-            if (Directory.Exists(bin))
-                tasks.Add(DeleteDirectoryAsync(bin, recycleOption));
-            if (Directory.Exists(obj))
-                tasks.Add(DeleteDirectoryAsync(obj, recycleOption));
-            if (Directory.Exists(packages))
-                tasks.Add(DeleteDirectoryAsync(packages, recycleOption));
-
-            if (tasks.Any())
+            var tasks = new List<Task>()
             {
-                await Task.WhenAll(tasks);
-            }
+                DeleteDirectoryIfExistsAsync(obj, recycleOption),
+                DeleteDirectoryIfExistsAsync(packages, recycleOption),
+                DeleteDirectoryIfExistsAsync(nodeModules, recycleOption)
+            };
+
+            // deleting the roslyn folder can cause some weird issues
+            if (Directory.Exists(Path.Combine(bin, "roslyn")))
+                tasks.Add(DeleteAllFilesAsync(bin, recycleOption));
             else
+                tasks.Add(DeleteDirectoryIfExistsAsync(bin, recycleOption));
+
+            await Task.WhenAll(tasks);
+
+            foreach (var folder in Directory.GetDirectories(filePath))
             {
-                foreach (var folder in Directory.GetDirectories(filePath))
-                {
-                    await CleanRecursiveAsync(folder, options, recycleOption);
-                }
+                // a lot of npm packages have bin & obj folders, so ignore it
+                // also, deleting the roslyn folder can cause issues
+                if (folder.EndsWith("node_modules") || folder.EndsWith("roslyn"))
+                    continue;
+
+                await CleanRecursiveAsync(folder, options, recycleOption);
             }
+
+            //var tasks = new List<Task>();
+
+            //if (!string.IsNullOrEmpty(bin) && Directory.Exists(bin)) tasks.Add(DeleteDirectoryAsync(bin, recycleOption));
+            //if (!string.IsNullOrEmpty(obj) && Directory.Exists(obj)) tasks.Add(DeleteDirectoryAsync(obj, recycleOption));
+            //if (!string.IsNullOrEmpty(packages) && Directory.Exists(packages)) tasks.Add(DeleteDirectoryAsync(packages, recycleOption));
+            //if (!string.IsNullOrEmpty(nodeModules) && Directory.Exists(nodeModules)) tasks.Add(DeleteDirectoryAsync(nodeModules, recycleOption));
+
+            //if (tasks.Any())
+            //{
+            //    await Task.WhenAll(tasks);
+            //}
+            //else
+            //{
+            //    foreach (var folder in Directory.GetDirectories(filePath))
+            //    {
+            //        await CleanRecursiveAsync(folder, options, recycleOption);
+            //    }
+            //}
+        }
+
+        private async Task DeleteDirectoryIfExistsAsync(string directory, RecycleOption recycleOption)
+        {
+            if (!string.IsNullOrEmpty(directory) && Directory.Exists(directory))
+                await DeleteDirectoryAsync(directory, recycleOption);
         }
 
         private async Task DeleteAllFilesAsync(string filePath, RecycleOption recycleOption)

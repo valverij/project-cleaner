@@ -34,6 +34,7 @@
             this.cbTempFiles = new System.Windows.Forms.CheckBox();
             this.cbAspFiles = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbNodeModules = new System.Windows.Forms.CheckBox();
             this.cbNugetPackages = new System.Windows.Forms.CheckBox();
             this.rbRecycle = new System.Windows.Forms.RadioButton();
             this.rbDelete = new System.Windows.Forms.RadioButton();
@@ -44,7 +45,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.processCounterLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.processCounter = new System.Windows.Forms.ToolStripStatusLabel();
-            this.cbNodeModules = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -116,6 +116,16 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cleaner Options";
+            // 
+            // cbNodeModules
+            // 
+            this.cbNodeModules.AutoSize = true;
+            this.cbNodeModules.Location = new System.Drawing.Point(201, 19);
+            this.cbNodeModules.Name = "cbNodeModules";
+            this.cbNodeModules.Size = new System.Drawing.Size(122, 17);
+            this.cbNodeModules.TabIndex = 8;
+            this.cbNodeModules.Text = "Clear Node Modules";
+            this.cbNodeModules.UseVisualStyleBackColor = true;
             // 
             // cbNugetPackages
             // 
@@ -225,16 +235,6 @@
             this.processCounter.Size = new System.Drawing.Size(13, 17);
             this.processCounter.Text = "0";
             // 
-            // cbNodeModules
-            // 
-            this.cbNodeModules.AutoSize = true;
-            this.cbNodeModules.Location = new System.Drawing.Point(201, 19);
-            this.cbNodeModules.Name = "cbNodeModules";
-            this.cbNodeModules.Size = new System.Drawing.Size(122, 17);
-            this.cbNodeModules.TabIndex = 8;
-            this.cbNodeModules.Text = "Clear Node Modules";
-            this.cbNodeModules.UseVisualStyleBackColor = true;
-            // 
             // ProjectCleaner
             // 
             this.AcceptButton = this.btnClean;
@@ -255,8 +255,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProjectCleaner";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Project Cleaner";
             this.Load += new System.EventHandler(this.ProjectCleaner_Load);
